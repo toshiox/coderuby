@@ -14,15 +14,15 @@ class BaseMongoRepository
     @database[collection_name].find(query).first
   end
 
-  def insert_one(collection_name, document)
-    @database[collection_name].insert_one(document)
+  def insert(collection_name, data)
+    @database[collection_name].insert_one(data)
   end
 
-  def update_one(collection_name, query, update)
-    @database[collection_name].update_one(query, update)
+  def update(collection_name, query, data)
+  @database[collection_name].update_one(query, data)
   end
 
-  def delete_one(collection_name, query)
+  def delete(collection_name, query)
     @database[collection_name].delete_one(query)
   end
 end

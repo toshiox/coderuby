@@ -1,0 +1,15 @@
+en:
+  repository:
+    success:
+      find: Registers listed with success
+      findOne: Register founded with success 
+      insert: Register add with success
+      update: Register updated with sucess
+      delete: Register %{id} deleted with success
+    error:
+      find: Unable to list records, consult logs
+      findOne: Unable to found register, consult logs 
+      insert: Unable to insert register, consult logs
+      update: Unable to update register, consult logs
+      delete: Unable to delete register, consult logs
+      notExist: register not found in db
