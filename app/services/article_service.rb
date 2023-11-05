@@ -37,12 +37,11 @@ class ArticleService
                 return ApiResponse.new(false, @messages['en']['repository']['error']['idNull'], nil)
             end
 
-            article = GetById(data['id'])
-            if article.nil?
-                return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)
-            else
+            if @article_repository.Any(_id: BSON::ObjectId(data['id']))
                 @article_repository.Update(data)
                 return ApiResponse.new(true, @messages['en']['repository']['success']['update'], nil)
+            else
+                return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)
             end
         rescue => en
             return ApiResponse.new(false, @messages['en']['repository']['error']['update'], nil)

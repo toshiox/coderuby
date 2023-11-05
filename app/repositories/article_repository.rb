@@ -24,4 +24,9 @@ class ArticleRepository < BaseMongoRepository
     def Delete(id)
         delete('article', _id: BSON::ObjectId(id))
     end
+    
+    def Any(query)
+        any('article', query)
+    end
+
 end

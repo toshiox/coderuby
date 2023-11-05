@@ -19,10 +19,14 @@ class BaseMongoRepository
   end
 
   def update(collection_name, query, data)
-  @database[collection_name].update_one(query, data)
+    @database[collection_name].update_one(query, data)
   end
 
   def delete(collection_name, query)
     @database[collection_name].delete_one(query)
+  end
+
+  def any(collection_name, query)
+    @database[collection_name].find(query).count > 0
   end
 end
