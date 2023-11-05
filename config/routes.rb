@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   n.routes.draw do
     namespace :api do
       resources :items, only: [:index]
+      resources :article, only: [:index]
     end
   end
 end

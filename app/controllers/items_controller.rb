@@ -1,5 +1,4 @@
-require 'sinatra/base'
-require '../services/item_service'
+require './services/item_service'
 
 class ItemsController < Sinatra::Base
   item_service = ItemService.new
@@ -14,7 +13,7 @@ class ItemsController < Sinatra::Base
     items = item_service.GetById(id).to_json
   end
 
-  post '/api/items' do content_type :json
+  post '/api/items' do 
     content_type :json
     request.body.rewind
     items = item_service.AddItems(JSON.parse(request.body.read)).to_json
@@ -30,6 +29,4 @@ class ItemsController < Sinatra::Base
     content_type :json
     items = item_service.Delete(id).to_json
   end
-
-  run! if app_file == $0
 end

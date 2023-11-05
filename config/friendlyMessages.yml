@@ -13,3 +13,4 @@ en:
       update: Unable to update register, consult logs
       delete: Unable to delete register, consult logs
       notExist: register not found in db
+      idNull: Id cannot be null or empty

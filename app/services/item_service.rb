@@ -3,7 +3,7 @@ require_relative '../models/api/api_response'
 class ItemService
     def initialize()
         @item_repository = ItemRepository.new
-        @messages = YAML.load_file('../../config/friendlyMessages.yml')
+        @messages = YAML.load_file('../config/friendlyMessages.yml')
     end
     
     def ListAll
