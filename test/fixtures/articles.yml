@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  subtitle: MyText
+  resume: MyString
+  timeRead: 1
+  tags: MyString
+
+two:
+  title: MyString
+  subtitle: MyText
+  resume: MyString
+  timeRead: 1
+  tags: MyString
