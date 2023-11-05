@@ -1,42 +1,20 @@
-# class ItemsController < ApplicationController
-#   def initialize
-#     @items_service = ItemsService.new
-#   end    
+require 'sinatra/base'
+require '../services/item_service'
 
-#   def ListAll
-#     render json?@items_service.ListAll
-#   end
-# end
-  
-class ItemsController < ApplicationController
-  before_action :set_item, only: [:show]
+class ItemsController < Sinatra::Base
+  item_service = ItemService.new
 
-  def index
-    @items = Item.all
-    render json: @items
+  get '/api/hello' do
+    content_type :json
+    items = item_service.ListAll
+    items.to_json
   end
 
-  def show
-    render json: @item
+  get '/api/items' do
+    content_type :json
+    items = item_service.ListAll
+    items.to_json
   end
 
-  def create
-    @item = Item.new(item_params)
-
-    if @item.save
-      render json: @item, status: :created
-    else
-      render json: @item.errors, status: :unprocessable_entity
-    end
-  end
-
-  private
-
-  def set_item
-    @item = Item.find(params[:id])
-  end
-
-  def item_params
-    params.require(:item).permit(:name, :description)
-  end
+  run! if app_file == $0
 end

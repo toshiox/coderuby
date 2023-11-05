@@ -1,3 +1,5 @@
+require_relative 'base_mongo_repository'
+
 class ItemRepository < BaseMongoRepository
     def initialize()
         super
@@ -7,7 +9,7 @@ class ItemRepository < BaseMongoRepository
         find('items').to_a
     end
     
-    def GetByName(name)
+    def GetById(name)
         find_one('items', name: BSON::ObjectId(name))
     end
 end

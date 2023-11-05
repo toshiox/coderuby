@@ -25,4 +25,4 @@ class BaseMongoRepository
   def delete_one(collection_name, query)
     @database[collection_name].delete_one(query)
   end
-en
+end
