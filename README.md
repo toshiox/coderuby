@@ -1,24 +1,7 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application is made to provide functionality for the ToshioCode website.
 
-Things you may want to cover:
+The idea of ​​the application is just programming in ruby ​​(I liked it more than I imagined :D)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+To run just the application, open the app directory at the prompt and run ruby ​​app.rb
