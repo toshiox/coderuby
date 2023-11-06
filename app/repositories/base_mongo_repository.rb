@@ -1,32 +1,33 @@
 require 'mongo'
 
 class BaseMongoRepository
-  def initialize()
+  def initialize(collection_name)
     @client = Mongo::Client.new("mongodb://localhost:27017")
     @database = @client.use("code")
+    @collection_name = collection_name
   end
 
-  def find(collection_name, query = {}, options = {})
-    @database[collection_name].find(query, options)
+  def find(query = {}, options = {})
+    @database[@collection_name].find(query, options)
   end
 
-  def find_one(collection_name, query)
-    @database[collection_name].find(query).first
+  def find_one(query)
+    @database[@collection_name].find(query).first
   end
 
-  def insert(collection_name, data)
-    @database[collection_name].insert_one(data)
+  def insert(data)
+    @database[@collection_name].insert_one(data)
   end
 
-  def update(collection_name, query, data)
-    @database[collection_name].update_one(query, data)
+  def update(query, data)
+    @database[@collection_name].update_one(query, data)
   end
 
-  def delete(collection_name, query)
-    @database[collection_name].delete_one(query)
+  def delete(query)
+    @database[@collection_name].delete_one(query)
   end
 
-  def any(collection_name, query)
-    @database[collection_name].find(query).count > 0
+  def any(query)
+    @database[@collection_name].find(query).count > 0
   end
 end

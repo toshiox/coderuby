@@ -2,13 +2,13 @@ require_relative '../models/api/api_response'
 require_relative '../repositories/article_repository'
 class ArticleService
     def initialize
-        @article_repository = ArticleRepository.new
+        @article_repository = ArticleRepository.new('article')
         @messages = YAML.load_file('../config/friendlyMessages.yml')
     end
 
     def ListAll
         begin
-            ApiResponse.new(true, @messages['en']['repository']['success']['find'], @article_repository.ListAll)
+            ApiResponse.new(true, @messages['en']['repository']['success']['find'], @article_repository.find().to_a)
         rescue => en
             ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)
         end
@@ -16,7 +16,7 @@ class ArticleService
 
     def GetById(id)
         begin
-            ApiResponse.new(true, @messages['en']['repository']['success']['find'], @article_repository.GetById(id))
+            ApiResponse.new(true, @messages['en']['repository']['success']['find'], @article_repository.find_one(_id: BSON::ObjectId(id)))
         rescue => en
             ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)
         end
@@ -24,7 +24,7 @@ class ArticleService
 
     def Add(data)
         begin
-            @article_repository.Add(data)
+            @article_repository.insert(data)
             ApiResponse.new(true, @messages['en']['repository']['success']['insert'], nil)
         rescue => en 
             ApiResponse.new(false, @messages['en']['repository']['error']['insert'], nil)
@@ -37,8 +37,8 @@ class ArticleService
                 return ApiResponse.new(false, @messages['en']['repository']['error']['idNull'], nil)
             end
 
-            if @article_repository.Any(_id: BSON::ObjectId(data['id']))
-                @article_repository.Update(data)
+            if @article_repository.any(_id: BSON::ObjectId(data['id']))
+                @article_repository.update({ '_id' => BSON::ObjectId(data['id']) }, { '$set' => data })
                 return ApiResponse.new(true, @messages['en']['repository']['success']['update'], nil)
             else
                 return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)
@@ -50,12 +50,12 @@ class ArticleService
 
     def Delete(id)
         begin
-            article = GetById(id);
-            if(article.nil?)
-                return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)
-            else
-                @article_repository.Delete(id)
+            query = _id: BSON::ObjectId(id)
+            if @article_repository.any(query)
+                @article_repository.delete(query)
                 ApiResponse.new(true, @messages['en']['repository']['success']['delete'] %  { id: id }, nil)
+            else
+                return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)
             end
         rescue => en 
             ApiResponse.new(false, @messages['en']['repository']['error']['insert'], nil)
