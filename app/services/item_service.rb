@@ -46,9 +46,8 @@ class ItemService
 
     def Delete(id)
         begin
-            query = _id: BSON::ObjectId(id)
-            if @item_repository.any(query)
-                @item_repository.delete(query)
+            if @item_repository.any(_id: BSON::ObjectId(id))
+                @item_repository.delete(_id: BSON::ObjectId(id))
                 return ApiResponse.new(true, @messages['en']['repository']['success']['delete'] % { id: id }, nil)
             else
                 return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)

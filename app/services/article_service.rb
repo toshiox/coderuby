@@ -50,9 +50,8 @@ class ArticleService
 
     def Delete(id)
         begin
-            query = _id: BSON::ObjectId(id)
-            if @article_repository.any(query)
-                @article_repository.delete(query)
+            if @article_repository.any(_id: BSON::ObjectId(id))
+                @article_repository.delete(_id: BSON::ObjectId(id))
                 ApiResponse.new(true, @messages['en']['repository']['success']['delete'] %  { id: id }, nil)
             else
                 return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)
