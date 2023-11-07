@@ -13,4 +13,4 @@ class ConfigController < Sinatra::Base
       response.headers["Access-Control-Allow-Origin"] = "*"
       200
     end
-  end
+end
