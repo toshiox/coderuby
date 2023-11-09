@@ -7,6 +7,8 @@ gem 'sinatra-cross_origin'
 gem "sqlite3", "~> 1.4"
 gem "puma", ">= 5.0"
 gem 'mongoid'
+gem 'redis'
+gem 'rest-client', '~> 2.1'
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 gem 'rack-cors', require: 'rack/cors'

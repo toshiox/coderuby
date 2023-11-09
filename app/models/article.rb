@@ -6,4 +6,5 @@ class Article
   field :resume, type: String
   field :timeRead, type: Integer
   field :tags, type: String
+  field :language, type: String
 end

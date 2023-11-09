@@ -1,17 +1,35 @@
+require 'json'
+require 'redis'
+require_relative './translate_service'
 require_relative '../models/api/api_response'
 require_relative '../repositories/article_repository'
 class ArticleService
     def initialize
+        @translate = TranslateService.new
         @article_repository = ArticleRepository.new('article')
         @messages = YAML.load_file('../config/friendlyMessages.yml')
     end
 
     def ListAll
-        begin
-            ApiResponse.new(true, @messages['en']['repository']['success']['find'], @article_repository.find().to_a)
-        rescue => en
-            ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)
-        end
+        # Set a value for the key "my_key"
+        $redis.set("my_key", "my_value")
+
+        # Get the value for the key "my_key"
+        return $redis.get("my_key")
+        # begin
+            # cache = @redis.get('article_data')
+            # if cache
+            #     # Se os dados estiverem no cache, retorna os dados do Redis
+            #     content_type :json
+            #     cache
+            # else
+            #     items = @article_repository.find()
+            #     @redis.set('article_data', items.to_json)
+            #     ApiResponse.new(true, @messages['en']['repository']['success']['find'], items.to_a)
+            # end
+        # rescue => en
+        #     ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)
+        # end
     end
 
     def GetById(id)
