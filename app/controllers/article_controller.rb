@@ -3,9 +3,10 @@ require './services/article_service'
 class ArticleController < Sinatra::Base
     article_service = ArticleService.new
 
-    get '/api/article' do
+    get '/api/article/:language' do
+        language = params['language']
         content_type :json
-        items = article_service.ListAll.to_json
+        items = article_service.ListAll(language).to_json
     end
 
     get '/api/article/:id' do |id|

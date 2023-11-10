@@ -10,26 +10,24 @@ class ArticleService
         @messages = YAML.load_file('../config/friendlyMessages.yml')
     end
 
-    def ListAll
-        # Set a value for the key "my_key"
-        $redis.set("my_key", "my_value")
-
-        # Get the value for the key "my_key"
-        return $redis.get("my_key")
-        # begin
-            # cache = @redis.get('article_data')
-            # if cache
-            #     # Se os dados estiverem no cache, retorna os dados do Redis
-            #     content_type :json
-            #     cache
-            # else
-            #     items = @article_repository.find()
-            #     @redis.set('article_data', items.to_json)
-            #     ApiResponse.new(true, @messages['en']['repository']['success']['find'], items.to_a)
-            # end
-        # rescue => en
-        #     ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)
-        # end
+    def ListAll(language)
+        begin
+            articles = @article_repository.find().to_a
+            articles.map! do |item|
+                if item['language'] != language
+                    item['title'] = @translate.translate(item['title'], item['language'], language);
+                    item['subtitle'] = @translate.translate(item['subtitle'], item['language'], language);
+                    item['resume'] = @translate.translate(item['resume'], item['language'], language);
+                    item['timeRead'] = item['timeRead'];
+                    item['tags'] = @translate.translate(item['tags'], item['language'], language);
+                    item['language'] = item['language'];
+                end
+                item
+            end
+            ApiResponse.new(true, @messages['en']['repository']['success']['find'], articles)
+        rescue => en
+            ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)
+        end
     end
 
     def GetById(id)
