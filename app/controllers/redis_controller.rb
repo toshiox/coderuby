@@ -3,9 +3,8 @@ require_relative '../services/redis_service'
 class RedisController < Sinatra::Base
     redis_service = RedisService.new
 
-    get '/api/redis' do
+    get '/api/redis/:id' do |id|
         content_type :json
-        redis_service.Set()
-        redis_service.Get()
+        redis_service.get_article(id)
     end
 end
