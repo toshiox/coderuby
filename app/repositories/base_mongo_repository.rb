@@ -31,4 +31,8 @@ class BaseMongoRepository
   def any(query)
     @database[@collection_name].find(query).count > 0
   end
+
+  def find_and_update(query, data)
+    @database[@collection_name].find_one_and_update(query, { '$set' => data }, { return_document: :after })
+  end
 end

@@ -24,7 +24,7 @@ class ArticleController < Sinatra::Base
         content_type :json
         request.body.rewind
         items = article_service.Update(JSON.parse(request.body.read)).to_json
-      end
+    end
 
     delete '/api/article/:id' do |id|
         content_type :json

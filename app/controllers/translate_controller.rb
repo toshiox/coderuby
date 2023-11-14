@@ -1,6 +1,6 @@
-require './services/translate_service'
+require './services/tradutor_service'
 class TranslateController < Sinatra::Base
-    translate_service = TranslateService.new
+    translate_service = TradutorService.new
 
     get '/api/translate' do
         content_type :json
