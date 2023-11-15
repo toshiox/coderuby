@@ -15,6 +15,7 @@ class RedisService
             article_id = "article:#{article['_id']['$oid']}_#{language}"
             if exist_article(article_id) == 0
                 @redis.set(article_id, article.to_json)
+                @redis.sadd("language:#{article['language']}", article_id)
             end
         end
     end
@@ -25,5 +26,24 @@ class RedisService
 
     def exist_article(id)
         @redis.exists(id)
+    end
+
+    def list_all_articles(language)
+        articles = []
+        filtered_keys = keys_in_language = @redis.smembers("language:#{language}")
+        puts language
+        puts filtered_keys
+        filtered_keys.each do |key|
+            value = @redis.get(key)
+            if value
+                articles << JSON.parse(value)
+            end
+        end
+        articles.to_json
+    end
+
+    def cleanMemory()
+        @redis.flushdb
+        @redis.flushall
     end
 end

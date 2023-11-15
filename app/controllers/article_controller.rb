@@ -1,6 +1,7 @@
+require './services/redis_service'
 require './services/article_service'
-
 class ArticleController < Sinatra::Base
+    redis_service =  RedisService.new
     article_service = ArticleService.new
 
     get '/api/article/:language' do
@@ -14,7 +15,7 @@ class ArticleController < Sinatra::Base
         items = article_service.GetById(id).to_json
     end
 
-    post '/api/article' do 
+    post '/api/article' do
         content_type :json
         request.body.rewind
         items = article_service.Add(JSON.parse(request.body.read)).to_json
@@ -30,4 +31,6 @@ class ArticleController < Sinatra::Base
         content_type :json
         items = article_service.Delete(id).to_json
     end
+
+
 end

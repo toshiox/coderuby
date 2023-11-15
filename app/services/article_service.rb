@@ -20,6 +20,7 @@ class ArticleService
                         item[field] = @tradutor.translate(item[field], item['language'], language)
                     end
                 end
+                item['language'] = language
                 item
             end
             @redis.set_articles(articles.to_json, language);
@@ -42,7 +43,7 @@ class ArticleService
         begin
             @article_repository.insert(data)
             ApiResponse.new(true, @messages['en']['repository']['success']['insert'], nil)
-        rescue => en 
+        rescue => en
             ApiResponse.new(false, @messages['en']['repository']['error']['insert'], nil)
         end
     end
@@ -64,7 +65,7 @@ class ArticleService
             return ApiResponse.new(false, @messages['en']['repository']['error']['update'], nil)
         end
     end
-      
+
     def Delete(id)
         begin
             if @article_repository.any(_id: BSON::ObjectId(id))
@@ -73,7 +74,7 @@ class ArticleService
             else
                 return ApiResponse.new(false, @messages['en']['repository']['error']['notExist'], nil)
             end
-        rescue => en 
+        rescue => en
             ApiResponse.new(false, @messages['en']['repository']['error']['insert'], nil)
         end
     end
