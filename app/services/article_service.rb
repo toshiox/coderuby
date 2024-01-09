@@ -8,18 +8,30 @@ class ArticleService
         @redis = RedisService.new
         @tradutor = TradutorService.new
         @article_repository = ArticleRepository.new('article')
+        @articleContent_repository = ArticleRepository.new('articleContent')
         @messages = YAML.load_file('../config/friendlyMessages.yml')
     end
 
-    def ListAll(language)
+    def list_all(language)
         begin
-            articles = @article_repository.find().to_a
+            articles = (@article_repository.find().to_a).sort_by{|article| article["createdAt"] }.reverse
             articles.map! do |item|
+                text = @articleContent_repository.find_one({ "articleId" => item["id"] })
+                item["content"] = text["content"]
                 if item['language'] != language
                     ['tags', 'title', 'resume', 'subtitle'].each do |field|
                         item[field] = @tradutor.translate(item[field], item['language'], language)
                     end
+                    item["content"] =  @tradutor.translate(text["content"], item['language'], language)
                 end
+
+                if item['language'] == 'en'
+                    item['writtenLanguage'] = 'English'
+
+                elsif item['language'] == 'pt'
+                    item['writtenLanguage'] = 'Português'
+                end
+
                 item['language'] = language
                 item
             end
@@ -30,8 +42,7 @@ class ArticleService
         end
     end
 
-    def
-        GetById(id)
+    def get_by_id(id)
         begin
             ApiResponse.new(true, @messages['en']['repository']['success']['find'], @article_repository.find_one(_id: BSON::ObjectId(id)))
         rescue => en
@@ -39,7 +50,7 @@ class ArticleService
         end
     end
 
-    def Add(data)
+    def add(data)
         begin
             @article_repository.insert(data)
             ApiResponse.new(true, @messages['en']['repository']['success']['insert'], nil)
@@ -48,7 +59,7 @@ class ArticleService
         end
     end
 
-    def Update(data)
+    def update(data)
         begin
             if data['id'].nil? || (data['id'].respond_to?(:empty?) && data['id'].empty?)
                 return ApiResponse.new(false, @messages['en']['repository']['error']['idNull'], nil)
@@ -66,7 +77,7 @@ class ArticleService
         end
     end
 
-    def Delete(id)
+    def delete(id)
         begin
             if @article_repository.any(_id: BSON::ObjectId(id))
                 @article_repository.delete(_id: BSON::ObjectId(id))

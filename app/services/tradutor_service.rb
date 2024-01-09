@@ -3,8 +3,8 @@ require 'httparty'
 
 class TradutorService
     def translate(text, from, to)
-        location = "eastus"
-        key = "dd0e220a186f4955aeb16a7a28e97c5c"
+        location = "brazilsouth"
+        key = "62b98b04e39b405daf86d318fc63a7a8"
         endpoint = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=#{from}&to=#{to}"
         request_body = [{ Text: text }].to_json
         headers = {

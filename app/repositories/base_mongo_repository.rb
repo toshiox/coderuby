@@ -3,7 +3,8 @@ require 'mongo'
 class BaseMongoRepository
   def initialize(collection_name)
     # @client = Mongo::Client.new("mongodb://localhost:27017")
-    @client = Mongo::Client.new("mongodb+srv://toshio-code-mdb:KAI0Lhwwz7uyIw13@toshio-code-cluster.eiyf4y4.mongodb.net/?retryWrites=true&w=majority")
+    @client = Mongo::Client.new("mongodb+srv://toshio-code-mdb:UBNuWFVAjLfCC5Xl@toshio-code-cluster.eiyf4y4.mongodb.net/test?retryWrites=true&w=majority", connect_timeout: 15)
+
     @database = @client.use("code")
     @collection_name = collection_name
   end
@@ -12,8 +13,8 @@ class BaseMongoRepository
     @database[@collection_name].find(query, options)
   end
 
-  def find_one(query)
-    @database[@collection_name].find(query).first
+  def find_one(query, options = {})
+    @database[@collection_name].find(query, options).first
   end
 
   def insert(data)

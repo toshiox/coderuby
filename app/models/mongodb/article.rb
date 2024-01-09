@@ -7,4 +7,5 @@ class Article
   field :timeRead, type: Integer
   field :tags, type: String
   field :language, type: String
+  field :createdAt, type: DateTime
 end
