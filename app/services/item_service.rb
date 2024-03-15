@@ -5,7 +5,7 @@ class ItemService
         @item_repository = ItemRepository.new('items')
         @messages = YAML.load_file('../config/friendlyMessages.yml')
     end
-    
+
     def ListAll
         begin
             ApiResponse.new(true, @messages['en']['repository']['success']['find'], @item_repository.find().to_a)

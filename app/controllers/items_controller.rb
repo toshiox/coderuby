@@ -13,7 +13,7 @@ class ItemsController < Sinatra::Base
     items = item_service.GetById(id).to_json
   end
 
-  post '/api/items' do 
+  post '/api/items' do
     content_type :json
     request.body.rewind
     items = item_service.AddItems(JSON.parse(request.body.read)).to_json

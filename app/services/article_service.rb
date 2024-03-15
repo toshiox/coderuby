@@ -25,11 +25,11 @@ class ArticleService
                     item["content"] =  @tradutor.translate(text["content"], item['language'], language)
                 end
 
-                if item['language'] == 'en'
+                if language == 'en'
                     item['writtenLanguage'] = 'English'
 
-                elsif item['language'] == 'pt'
-                    item['writtenLanguage'] = 'Português'
+                elsif language == 'pt'
+                    item['writtenLanguage'] = 'Inglês'
                 end
 
                 item['language'] = language
