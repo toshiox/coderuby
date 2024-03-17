@@ -8,7 +8,7 @@ class RedisController < Sinatra::Base
         redis_service.get_article(id)
     end
 
-    get '/api/cleanMemory' do
+    get '/api/redis/cleanMemory' do
         content_type :json
         redis_service.cleanMemory()
     end

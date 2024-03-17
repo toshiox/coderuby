@@ -17,7 +17,9 @@ class ArticleService
             articles = (@article_repository.find().to_a).sort_by{|article| article["createdAt"] }.reverse
             articles.map! do |item|
                 text = @articleContent_repository.find_one({ "articleId" => item["id"] })
+                item["contentId"] = text["_id"].to_s
                 item["content"] = text["content"]
+
                 if item['language'] != language
                     ['tags', 'title', 'resume', 'subtitle'].each do |field|
                         item[field] = @tradutor.translate(item[field], item['language'], language)
@@ -61,6 +63,7 @@ class ArticleService
 
     def update(data)
         begin
+            puts data
             if data['id'].nil? || (data['id'].respond_to?(:empty?) && data['id'].empty?)
                 return ApiResponse.new(false, @messages['en']['repository']['error']['idNull'], nil)
             end
