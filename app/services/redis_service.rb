@@ -3,7 +3,7 @@ require 'uri'
 
 class RedisService
     def initialize
-        uri = URI.parse('rediss://:p599a832f612169fb4ba2a66b92d58adfd4f895486f34c42651870b6cb63e8243@ec2-54-162-73-43.compute-1.amazonaws.com:27290')
+        uri = URI.parse('rediss://:p599a832f612169fb4ba2a66b92d58adfd4f895486f34c42651870b6cb63e8243@ec2-34-232-212-196.compute-1.amazonaws.com:19110')
         @redis = Redis.new(
             url: uri.to_s,
             ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }

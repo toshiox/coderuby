@@ -17,8 +17,8 @@ class ArticleService
             articles = (@article_repository.find().to_a).sort_by{|article| article["createdAt"] }.reverse
             articles.map! do |item|
                 text = @articleContent_repository.find_one({ "articleId" => item["id"] })
-                item["contentId"] = text["_id"].to_s
                 item["content"] = text["content"]
+                item["contentId"] = text["_id"].to_s
 
                 if item['language'] != language
                     ['tags', 'title', 'resume', 'subtitle'].each do |field|
@@ -29,7 +29,6 @@ class ArticleService
 
                 if language == 'en'
                     item['writtenLanguage'] = 'English'
-
                 elsif language == 'pt'
                     item['writtenLanguage'] = 'Inglês'
                 end
