@@ -1,13 +1,13 @@
 require 'json'
 require_relative './redis_service'
-require_relative './tradutor_service'
+require_relative './translator_service'
 require_relative '../models/api/api_response'
 require_relative '../repositories/article_repository'
 
 class ArticleContentService
   def initialize
     @redis = RedisService.new
-    @tradutor = TradutorService.new
+    @translator = TranslatorService.new
     @article_repository = ArticleRepository.new('articleContent')
     @messages = YAML.load_file('../config/friendlyMessages.yml')
   end
@@ -50,7 +50,6 @@ class ArticleContentService
   def get_content(data)
     begin
       result = @article_repository.find_one({ "articleId" => data["id"] }).to_json
-      puts result
       return result["content"]
     rescue => en
       ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)

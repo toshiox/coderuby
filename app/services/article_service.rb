@@ -1,13 +1,13 @@
 require 'json'
 require_relative './redis_service'
-require_relative './tradutor_service'
+require_relative './translator_service'
 require_relative '../models/api/api_response'
 require_relative '../repositories/article_repository'
 require_relative './article_format'
 class ArticleService
     def initialize
         @redis = RedisService.new
-        @tradutor = TradutorService.new
+        @translator = TranslatorService.new
         @article_repository = ArticleRepository.new('article')
         @articleContent_repository = ArticleRepository.new('articleContent')
         @messages = YAML.load_file('../config/friendlyMessages.yml')
@@ -29,14 +29,14 @@ class ArticleService
               if content_needs_formatting
                 code_blocks = []
                 text_without_code, code_blocks = @articleFormat.remove_and_store_code_blocks(text["content"])
-                translated_content = @tradutor.translate(text_without_code, item['language'], language)
+                translated_content = @translator.translate(text_without_code, item['language'], language)
                 item["content"] = @articleFormat.restore_code_blocks(translated_content, code_blocks)
               else
-                item["content"] = @tradutor.translate(text["content"], item['language'], language)
+                item["content"] = @translator.translate(text["content"], item['language'], language)
               end
 
               ['tags', 'title', 'resume', 'subtitle'].each do |field|
-                item[field] = @tradutor.translate(item[field], item['language'], language)
+                item[field] = @translator.translate(item[field], item['language'], language)
               end
             end
 

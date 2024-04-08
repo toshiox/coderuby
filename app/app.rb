@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'newrelic_rpm'
 require 'sinatra/cross_origin'
 require_relative './controllers/redis_controller'
 require_relative './controllers/items_controller'

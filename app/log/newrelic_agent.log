@@ -1,0 +1,29 @@
+# Logfile created on 2024-04-08 11:36:11 -0300 by logger.rb/v1.5.3
+[2024-04-08 11:36:11 -0300 Toshio (12588)] INFO : Starting the New Relic agent version 9.8.0 in "development" environment.
+[2024-04-08 11:36:11 -0300 Toshio (12588)] INFO : To prevent agent startup add a NEW_RELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2024-04-08 11:36:11 -0300 Toshio (12588)] INFO : Reading configuration from newrelic.yml (E:/ToshioSoft/Projeto/coderuby/app)
+[2024-04-08 11:36:11 -0300 Toshio (12588)] INFO : Environment: development
+[2024-04-08 11:36:11 -0300 Toshio (12588)] INFO : No known dispatcher detected.
+[2024-04-08 11:36:11 -0300 Toshio (12588)] INFO : Application: code-ruby (Development)
+[2024-04-08 11:36:11 -0300 Toshio (12588)] WARN : Failed to determine processor count, assuming 1
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing Fiber instrumentation
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported MonitoredFiber instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing Logger instrumentation
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported Logger instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing Net:HTTP Wrappers
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported NetHTTP instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing Sinatra instrumentation
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported Sinatra instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported Build instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported Rack instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported URLMap instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing Thread Instrumentation
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported MonitoredThread instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing Tilt instrumentation
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Installing New Relic supported Tilt instrumentation using Prepend
+[2024-04-08 11:36:12 -0300 Toshio (12588)] INFO : Finished instrumentation
+[2024-04-08 11:36:14 -0300 Toshio (12588)] INFO : Reporting to: https://rpm.newrelic.com/accounts/4391263/applications/1073554514
+[2024-04-08 11:36:27 -0300 Toshio (12588)] INFO : Doing deferred dependency-detection before Rack startup
+[2024-04-08 11:36:27 -0300 Toshio (12588)] INFO : Installing Mongo instrumentation
+[2024-04-08 11:36:27 -0300 Toshio (12588)] INFO : Installing Redis Instrumentation
+[2024-04-08 11:36:27 -0300 Toshio (12588)] INFO : Installing New Relic supported Redis instrumentation using Prepend
