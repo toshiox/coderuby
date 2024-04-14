@@ -42,7 +42,7 @@ class ArticleService
 
             item
           end
-        #   @redis.set_articles(articles.to_json, language)
+          @redis.set_articles(articles.to_json, language)
           ApiResponse.new(true, @messages['en']['repository']['success']['find'], articles)
         rescue => e
           ApiResponse.new(false, @messages['en']['repository']['error']['find'], nil)
