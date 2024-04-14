@@ -20,14 +20,11 @@ class ArticleService
           articles.map! do |item|
             text = @articleContent_repository.find_one({ "articleId" => item["id"] })
 
+            item["contentId"] = text["id"]
             item["content"] = text["content"]
-            item["contentId"] = text["_id"].to_s
 
             if item['language'] != language
-              content_needs_formatting = @articleFormat.need_format(text["content"])
-
-              if content_needs_formatting
-                code_blocks = []
+              if @articleFormat.need_format(text["content"])
                 text_without_code, code_blocks = @articleFormat.remove_and_store_code_blocks(text["content"])
                 translated_content = @translator.translate(text_without_code, item['language'], language)
                 item["content"] = @articleFormat.restore_code_blocks(translated_content, code_blocks)
@@ -45,7 +42,7 @@ class ArticleService
 
             item
           end
-          @redis.set_articles(articles.to_json, language)
+        #   @redis.set_articles(articles.to_json, language)
           ApiResponse.new(true, @messages['en']['repository']['success']['find'], articles)
         rescue => e
           ApiResponse.new(false, @messages['en']['repository']['error']['find'], nil)

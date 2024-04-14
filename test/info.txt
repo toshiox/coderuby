@@ -1,0 +1,3 @@
+para rodar os testes unitarios execute o comando rspec, 
+
+ex:rspec test/services/article_format_tests.rb
