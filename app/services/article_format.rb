@@ -19,11 +19,11 @@ class ArticleFormat
     end
 
     def restore_code_blocks(text, code_blocks)
-      code_blocks.each do |code|
-        if(text.include?('<--C#-->'))
-          text = text.gsub('<--C#-->', code)
-        elsif(text.include?('<--RBY-->'))
-          text = text.gsub('<--RBY-->', code)
+      code_blocks.each_with_index do |code, index|
+        if text.include?('<--C#-->')
+          text.sub!('<--C#-->', code) if code.include?('<C#>')
+        elsif text.include?('<--RBY-->')
+          text.sub!('<--RBY-->', code) if code.include?('<Ruby>')
         end
       end
       text
