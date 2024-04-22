@@ -34,4 +34,8 @@ class BaseMongoRepository
   def find_and_update(query, data)
     @database[@collection_name].find_one_and_update(query, { '$set' => data }, { return_document: :after })
   end
+
+  def find_and_upsert(query, data)
+    @database[@collection_name].find_one_and_update(query, { '$set' => data }, { return_document: :after, upsert: true })
+  end
 end

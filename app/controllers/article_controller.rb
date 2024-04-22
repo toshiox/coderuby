@@ -2,8 +2,7 @@ require './services/article_service'
 class ArticleController < Sinatra::Base
     article_service = ArticleService.new
 
-    get '/api/article/:language' do
-        language = params['language']
+    get '/api/article/:language' do |language|
         content_type :json
         items = article_service.list_all(language).to_json
     end
