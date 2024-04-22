@@ -6,6 +6,7 @@ en:
       insert: Register add with success
       update: Register updated with sucess
       delete: Register %{id} deleted with success
+      updateViews: Views update with success
     error:
       find: Unable to list records, consult logs
       findOne: Unable to found register, consult logs 

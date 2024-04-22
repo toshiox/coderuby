@@ -1,8 +1,9 @@
 require './repositories/unit_repository'
-
+require_relative '../models/api/api_response'
 class ArticleViewsService
   def initialize
     @unit = UnitRepository.new
+    @messages = YAML.load_file('../config/friendlyMessages.yml')
   end
 
   def updateViews(ip_address, articleId)
@@ -22,5 +23,6 @@ class ArticleViewsService
         @unit.article.update({ 'id' => articleId }, { '$set' => { "views" => views } }).to_s
       end
     end
+    return ApiResponse.new(true, @messages['en']['repository']['success']['updateViews'], nil).to_json
   end
 end
