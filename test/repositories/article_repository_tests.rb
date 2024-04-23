@@ -15,7 +15,7 @@ RSpec.describe ArticleRepository do
     allow(collection).to receive(:client).and_return(client)
   end
 
-  describe '#find' do
+  describe 'find' do
     let(:query) { { name: 'test' } }
     let(:options) { {} }
     it 'calls find on the collection with correct parameters' do
@@ -24,7 +24,7 @@ RSpec.describe ArticleRepository do
     end
   end
 
-  describe '#find_one' do
+  describe 'find_one' do
     let(:query) { { name: 'test' } }
     let(:options) { {} }
 
@@ -40,5 +40,63 @@ RSpec.describe ArticleRepository do
       result = repository.find_one(query, options)
       expect(result).to eq(nil)
     end
+
+    context 'when an exception occurs during the query execution' do
+      let(:query) { { 'key' => 'value' } }
+      let(:options) { {} }
+
+      it 'raises an error' do
+        allow(collection).to receive(:find).with(query, options).and_raise(StandardError)
+        expect { repository.find_one(query, options) }.to raise_error(StandardError)
+      end
+    end
+  end
+
+  describe 'insert' do
+    let(:data) { { key: 'value' } }
+
+    it 'inserts data into the collection' do
+      expect(collection).to receive(:insert_one).with(data)
+      repository.insert(data)
+    end
+
+    # let(:invalid_data) { { key: nil } }
+    # it 'handles invalid data appropriately' do
+    #   expect(collection).not_to receive(:insert_one).with(invalid_data)
+    #   expect { repository.insert(invalid_data) }.to raise_error(StandardError)
+    # end
+
+    context 'when data is nil' do
+      it 'does not perform an insertion' do
+        expect(collection).not_to receive(:insert_one)
+        repository.insert(nil)
+      end
+    end
+
+    context 'when data is empty' do
+      it 'does not perform an insertion' do
+        expect(collection).not_to receive(:insert_one)
+        repository.insert({})
+      end
+    end
+
+    context 'when an exception occurs' do
+      let(:data) { { key: 'value' } }
+
+      it 'raises an appropriate error' do
+        allow(collection).to receive(:insert_one).with(data).and_raise(Mongo::Error::OperationFailure)
+        expect { repository.insert(data) }.to raise_error(Mongo::Error::OperationFailure)
+      end
+    end
+
+    context 'with valid data' do
+      let(:valid_data) { { key: 'value' } }
+
+      it 'successfully inserts the data' do
+        expect(collection).to receive(:insert_one).with(valid_data)
+        repository.insert(valid_data)
+      end
+    end
+
   end
 end

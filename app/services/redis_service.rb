@@ -12,7 +12,7 @@ class RedisService
 
     def set_articles(articles, language)
         JSON.parse(articles).each do |article|
-            article_id = "article:#{article['_id']['$oid']}_#{language}"
+            article_id = "article:#{article['id']}_#{language}"
             if exist_article(article_id) == 0
                 @redis.set(article_id, article.to_json)
                 @redis.sadd("language:#{article['language']}", article_id)
@@ -21,7 +21,7 @@ class RedisService
     end
 
     def get_article(article_id)
-        @redis.get("article:#{article_id}")
+        @redis.get("article:#{article_id}").to_json
     end
 
     def exist_article(id)

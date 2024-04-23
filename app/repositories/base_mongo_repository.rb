@@ -16,14 +16,17 @@ class BaseMongoRepository
   end
 
   def insert(data)
+    return if data.nil? || data.empty?
     @database[@collection_name].insert_one(data)
   end
 
   def update(query, data)
+    return if data.nil? || data.empty?
     @database[@collection_name].update_one(query, data)
   end
 
   def delete(query)
+    return if data.nil? || data.empty?
     @database[@collection_name].delete_one(query)
   end
 
@@ -32,10 +35,12 @@ class BaseMongoRepository
   end
 
   def find_and_update(query, data)
+    return if data.nil? || data.empty?
     @database[@collection_name].find_one_and_update(query, { '$set' => data }, { return_document: :after })
   end
 
   def find_and_upsert(query, data)
+    return if data.nil? || data.empty?
     @database[@collection_name].find_one_and_update(query, { '$set' => data }, { return_document: :after, upsert: true })
   end
 end
