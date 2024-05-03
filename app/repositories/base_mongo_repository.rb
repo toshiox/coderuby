@@ -2,7 +2,7 @@ require 'mongo'
 
 class BaseMongoRepository
   def initialize(collection_name)
-    @client = Mongo::Client.new("mongodb+srv://toshio-code-mdb:UBNuWFVAjLfCC5Xl@toshio-code-cluster.eiyf4y4.mongodb.net/test?retryWrites=true&w=majority", connect_timeout: 15)
+    @client = Mongo::Client.new("mongodb+srv://toshio-code-mdb:UBNuWFVAjLfCC5Xl@toshio-code-cluster.eiyf4y4.mongodb.net/?retryWrites=true&w=majority&appName=toshio-code-cluster", connect_timeout: 15)
     @database = @client.use("code")
     @collection_name = collection_name
   end

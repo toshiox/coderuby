@@ -12,7 +12,7 @@ class ArticleViewsService
       'ipAddress' => ip_address,
       'view_date' => { '$gte' => (Time.now - 24 * 3600) }
     }
-    unless @unit.articleViews.any(query) || ip_address == "127.0.0.1"
+    unless @unit.articleViews.any(query) && ip_address == "127.0.0.1"
       data = {
         'articleId' => articleId,
         'view_date' => Time.now,
