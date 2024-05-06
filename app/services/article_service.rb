@@ -10,7 +10,7 @@ class ArticleService
         @translator = TranslatorService.new
         @article_repository = ArticleRepository.new('article')
         @articleContent_repository = ArticleRepository.new('articleContent')
-        @messages = YAML.load_file('../config/friendlyMessages.yml')
+        @messages = YAML.load_file('./config/friendlyMessages.yml')
         @articleFormat = ArticleFormat.new
     end
 

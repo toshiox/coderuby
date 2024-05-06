@@ -3,7 +3,7 @@ require_relative '../models/api/api_response'
 class ArticleViewsService
   def initialize
     @unit = UnitRepository.new
-    @messages = YAML.load_file('../config/friendlyMessages.yml')
+    @messages = YAML.load_file('./config/friendlyMessages.yml')
   end
 
   def updateViews(ip_address, articleId)

@@ -1,11 +1,12 @@
 require 'sinatra'
 require 'sinatra/cross_origin'
-require_relative './controllers/redis_controller'
-require_relative './controllers/items_controller'
-require_relative './controllers/article_controller'
-require_relative './controllers/_config_controller'
-require_relative './controllers/articleViews_controller'
-require_relative './controllers/articleContent_controller'
+
+require './controllers/redis_controller'
+require './controllers/items_controller'
+require './controllers/article_controller'
+require './controllers/_config_controller'
+require './controllers/articleViews_controller'
+require './controllers/articleContent_controller'
 
 use ConfigController
 
@@ -14,3 +15,5 @@ use ItemsController
 use ArticleController
 use ArticleViewsController
 use ArticleContentController
+
+set :bind, '0.0.0.0'

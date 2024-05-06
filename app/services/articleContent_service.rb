@@ -9,7 +9,7 @@ class ArticleContentService
     @redis = RedisService.new
     @translator = TranslatorService.new
     @article_repository = ArticleRepository.new('articleContent')
-    @messages = YAML.load_file('../config/friendlyMessages.yml')
+    @messages = YAML.load_file('./config/friendlyMessages.yml')
   end
 
   def get_by_id(data)
