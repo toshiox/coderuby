@@ -3,7 +3,7 @@ require 'uri'
 
 class RedisService
     def initialize
-        uri = URI.parse(host: 'redis')
+        uri = URI.parse("redis://redis:6379")
         @redis = Redis.new(
             url: uri.to_s,
             ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
@@ -15,7 +15,7 @@ class RedisService
             article_id = "article:#{article['id']}_#{language}"
             if exist_article(article_id) == 0
                 @redis.set(article_id, article.to_json)
-                @redis.sadd("language:#{article['language']}", article_id)
+                @redis.sadd?("language:#{article['language']}", article_id)
             end
         end
     end
