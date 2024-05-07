@@ -1,12 +1,32 @@
 version: '3'
 services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+
   app:
     build: .
-    container_name: docker-ruby
-    ports:
-      - "4567:4567"
+    expose:
+      - 4567
+    deploy:
+      replicas: 2
+      resources:
+        reservations:
+          cpus: '0.33'
+          memory: 90M
+        limits:
+          cpus: '0.33'
+          memory: 128M
+  
+  redis:
+    image: redis:latest
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 128M
+          cpus: '0.33'
+          memory: 64M
