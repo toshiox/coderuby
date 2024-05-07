@@ -10,9 +10,12 @@ services:
         limits:
           memory: 16M
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/nginx/nginx-selfsigned.crt:/etc/nginx/nginx-selfsigned.crt
+      - /etc/nginx/nginx-selfsigned.key:/etc/nginx/nginx-selfsigned.key
     depends_on:
       - app
 
