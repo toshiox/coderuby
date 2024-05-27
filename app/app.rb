@@ -4,7 +4,7 @@ require 'sinatra/cross_origin'
 require './controllers/redis_controller'
 require './controllers/items_controller'
 require './controllers/article_controller'
-require './controllers/_config_controller'
+require './controllers/concerns/config_http'
 require './controllers/articleViews_controller'
 require './controllers/articleContent_controller'
 

@@ -15,6 +15,16 @@ class ArticleFormat
         '<--RBY-->'
       end
 
+      text.gsub!(%r{<DockerFile>(.*?)<\/DockerFile>}m) do |match|
+        code_blocks << match
+        '<--DockerFile-->'
+      end
+
+      text.gsub!(%r{<DockerCompose>(.*?)<\/DockerCompose>}m) do |match|
+        code_blocks << match
+        '<--DockerCompose-->'
+      end
+
       [text, code_blocks]
     end
 
