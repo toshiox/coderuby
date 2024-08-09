@@ -10,5 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_09_204010) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "article_contents", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.integer "articleId"
+    t.string "content"
+    t.datetime "createdAt"
+  end
+
+  create_table "article_images", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.integer "articleId"
+    t.string "imageURL"
+    t.integer "typeImage"
+    t.datetime "createdAt"
+  end
+
+  create_table "article_views", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.integer "articleId"
+    t.string "ipAddress"
+    t.datetime "view_date"
+  end
+
+  create_table "articles", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.string "title"
+    t.string "subtitle"
+    t.string "resume"
+    t.string "tags"
+    t.string "language"
+    t.integer "time_read"
+    t.integer "views"
+    t.datetime "created_at"
+  end
+
 end

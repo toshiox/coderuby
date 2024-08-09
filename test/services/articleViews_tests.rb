@@ -27,7 +27,5 @@ RSpec.describe ArticleViewsService do
         service.updateViews(ip_address, article_id)
       end
     end
-
-    # Adicione mais contextos e exemplos para outros cenários de teste
   end
 end
