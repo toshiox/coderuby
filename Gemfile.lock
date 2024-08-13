@@ -188,6 +188,9 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
+    sinatra-activerecord (2.0.27)
+      activerecord (>= 4.1)
+      sinatra (>= 1.0)
     sinatra-cross_origin (0.4.0)
     sqlite3 (1.7.3-x64-mingw-ucrt)
     stringio (3.0.8)
@@ -217,6 +220,7 @@ DEPENDENCIES
   rails (~> 7.1.1)
   redis (~> 4.3)
   sinatra (~> 2.1.0)
+  sinatra-activerecord
   sinatra-cross_origin
   sqlite3 (~> 1.4)
   tzinfo-data

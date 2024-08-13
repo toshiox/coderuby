@@ -1,13 +1,15 @@
 require_relative './article_repository'
 require_relative './articleViews_repository'
-require_relative './articleContent_repository'
+# require_relative './articleContent_repository'
 
-class UnitRepository
-  attr_reader :article, :articleViews, :articleContent
+require_relative '../models/db/Article'
+require_relative '../models/db/ArticleViews'
 
+class UnitRepository 
+  attr_accessor :articles, :articleViews, :articleContent
   def initialize
-    @article = ArticleRepository.new('article')
-    @articleViews = ArticleRepository.new('articleViews')
-    @articleContent = ArticleContentRepository.new('articleContent')
+    @articles = ArticleRepository.new(Article)
+    @articleViews = ArticleRepository.new(ArticleViews)
+    # @articleContent = ArticleContentRepository.new('articleContent')
   end
 end

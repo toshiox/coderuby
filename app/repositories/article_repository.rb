@@ -1,4 +1,4 @@
-require_relative 'base_mongo_repository'
+require_relative 'base_repository'
 
-class ArticleRepository < BaseMongoRepository
+class ArticleRepository < BaseRepository
 end
