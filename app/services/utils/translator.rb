@@ -1,7 +1,7 @@
 require 'json'
 require 'httparty'
 
-class TranslatorService
+class Translator
     def translate(text, from, to)
         location = "brazilsouth"
         key = "62b98b04e39b405daf86d318fc63a7a8"

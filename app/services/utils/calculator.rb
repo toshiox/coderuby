@@ -1,4 +1,4 @@
-class CalculatorService
+class Calculator
   def average(numbers)
     raise ArgumentError, 'Input must be an array of numbers' unless numbers.is_a?(Array) && numbers.all? { |n| n.is_a?(Numeric) }
 

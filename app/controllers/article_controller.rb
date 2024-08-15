@@ -9,11 +9,7 @@ class ArticleController < Sinatra::Base
 
     get '/api/article/:language' do |language|
         content_type :json
-<<<<<<< HEAD
         items = @article_service.list_all_articles(language).to_json
-=======
-        items = article_service.ListAllArticles(language).to_json
->>>>>>> caefb8ae84edb03e63330a28c9f25329e44674ae
     end
 
     # get '/api/article/:id' do |id|

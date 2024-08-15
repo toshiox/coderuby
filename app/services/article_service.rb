@@ -1,29 +1,19 @@
 require 'json'
 require_relative './redis_service'
-require_relative './translator_service'
 require_relative '../models/api/api_response'
-require_relative '../repositories/article_repository'
-require_relative './article_format'
 require_relative '../repositories/unit_repository'
 
 
 class ArticleService
-    def initialize
-        @redis = RedisService.new
-        @articleFormat = ArticleFormat.new
-        @translator = TranslatorService.new
-        @unit_repostory = UnitRepository.new
-        @messages = YAML.load_file('./config/friendlyMessages.yml')
+    def initialize(redis_service, unit_repository, messages)
+        @redis = redis_service
+        @unit_repository = unit_repository
+        @messages = messages
     end
 
-<<<<<<< HEAD
     def list_all_articles(language)
-        articles = @unit_repostory.article.all({ language: language }).to_a
-=======
-    def ListAllArticles(language)
-        articles = @unit_repostory.articles.all(query = { language: language }).to_a
->>>>>>> caefb8ae84edb03e63330a28c9f25329e44674ae
-        @redis.set_articles(articles.to_json, language)
+        articles = @unit_repository.instance_variable_get(:@article).all({ language: language }).to_a
+        # # @redis.set_articles(articles.to_json, language)
         return ApiResponse.new(true, @messages['en']['repository']['success']['find'], articles)
     end
 
