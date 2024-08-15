@@ -1,9 +1,9 @@
 require_relative './Base'
 
 class ArticleViews < Base
-  self.primary_key = 'Id'
+  self.table_name = 'article_views'
 
-  validates :ArticleId, presence: true
-  validates :IpAddress, presence: true
-  validates :ViewDate, presence: true
+  validates :article_id, presence: true
+  validates :ip_address, presence: true
+  validates :view_date, presence: true
 end

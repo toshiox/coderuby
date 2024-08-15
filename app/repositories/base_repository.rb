@@ -12,12 +12,24 @@ class BaseRepository
   end
 
   def create(attributes)
-    @model.create(attributes)
+    return @model.create(attributes).persisted?
   end
 
   def update(id, attributes)
     record = find(id)
-    record.update(attributes)
+    
+    if record.nil?
+      puts "Record not found with id: #{id}"
+      return false
+    end
+  
+    if record.update(attributes)
+      puts "Record updated successfully"
+      return true
+    else
+      puts "Failed to update record: #{record.errors.full_messages.join(', ')}"
+      return false
+    end
   end
 
   def delete(id)
@@ -31,5 +43,9 @@ class BaseRepository
 
   def get(query, order)
     @model.where(query).order(order).first
+  end
+
+  def getOnly(query, selector)
+    @model.where(query).pluck(selector)
   end
 end

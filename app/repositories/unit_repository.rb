@@ -9,7 +9,7 @@ class UnitRepository
   attr_accessor :article, :articleViews
   def initialize
     @article = ArticleRepository.new(Article)
-    @articleViews = ArticleRepository.new(ArticleViews)
+    @articleViews = ArticleViewsRepository.new(ArticleViews)
     # @articleContent = ArticleContentRepository.new('articleContent')
   end
 end

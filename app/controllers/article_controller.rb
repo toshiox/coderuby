@@ -1,10 +1,15 @@
 require './services/article_service'
+
 class ArticleController < Sinatra::Base
-    article_service = ArticleService.new
+
+    def initialize(app = nil, article_service)
+        super(app)
+        @article_service = article_service
+      end
 
     get '/api/article/:language' do |language|
         content_type :json
-        items = article_service.ListAllArticles(language).to_json
+        items = @article_service.list_all_articles(language).to_json
     end
 
     # get '/api/article/:id' do |id|

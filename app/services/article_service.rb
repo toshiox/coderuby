@@ -16,8 +16,8 @@ class ArticleService
         @messages = YAML.load_file('./config/friendlyMessages.yml')
     end
 
-    def ListAllArticles(language)
-        articles = @unit_repostory.article.all(query = { Language: language }).to_a
+    def list_all_articles(language)
+        articles = @unit_repostory.article.all({ language: language }).to_a
         @redis.set_articles(articles.to_json, language)
         return ApiResponse.new(true, @messages['en']['repository']['success']['find'], articles)
     end
