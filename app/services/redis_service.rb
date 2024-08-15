@@ -3,11 +3,30 @@ require 'uri'
 
 class RedisService
     def initialize
+<<<<<<< HEAD
         uri = URI.parse("redis://localhost:6379")
         @redis = Redis.new(
             url: uri.to_s,
             ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
         )
+=======
+        begin
+            uri = URI.parse("redis://localhost:6379")
+            @redis = Redis.new(
+                url: uri.to_s,
+                ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+            )
+            # Testa a conexão
+            @redis.ping
+            puts "Conexão com o Redis estabelecida com sucesso."
+        rescue SocketError => e
+            puts "Erro de conexão com o Redis: #{e.message}"
+        rescue Redis::CannotConnectError => e
+            puts "Não foi possível conectar ao Redis: #{e.message}"
+        rescue => e
+            puts "Erro inesperado: #{e.message}"
+        end
+>>>>>>> caefb8ae84edb03e63330a28c9f25329e44674ae
     end
 
     def set_articles(articles, language)
