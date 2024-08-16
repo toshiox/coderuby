@@ -1,44 +1,41 @@
-require './repositories/unit_repository'
-require_relative '../models/api/api_response'
 class ArticleViewsService
-  def initialize
-    @unit = UnitRepository.new
-    @messages = YAML.load_file('./config/friendlyMessages.yml')
+  VIEW_EXPIRATION_PERIOD = 24 * 60 * 60 
+
+  def initialize(unit_repository, messages)
+    @messages = messages
+    @unit_repository = unit_repository
   end
 
-  def updateViews(ip_address, articleId)
-<<<<<<< HEAD
-    view = @unit.articleViews.get({ article_id: articleId, ip_address: ip_address }, view_date: :desc)
-    # puts @unit.articleViews.get({id: > 0}, {id: :desc})
-    # if(view.nil? || view.view_date < (Time.now - 24 * 60 * 60)) #&& ip_address == "127.0.1.1")
-    #   data = {
-    #     'id' => @unit.articleViews.getOnly({id: > 0}, {:id})
-    #     'article_id' => articleId,
-    #     'view_date' => Time.now,
-    #     'ip_address' => ip_address
-    #   }
-    #   if @unit.articleViews.create(data)
-    #     count = @unit.articleViews.all({ article_id: articleId}).count
-    #     @unit.article.update(articleId, {"views" => count }).to_s
-    #   end
-    # end
+  def update_views(ip_address, article_id)
+    return true unless should_update_views?(ip_address, article_id)
 
-=======
-    view = @unit.articleViews.get({ articleId: articleId, ipAddress: ip_address }, view_date: :desc)
-
-    unless view.view_date < (Time.now - 24*60*60) #&& ip_address == "127.0.0.1"
-      data = {
-        'articleId' => articleId,
-        'view_date' => Time.now,
-        'ipAddress' => ip_address
-      }
-      puts @unit.articleViews.create(data)
-      # if @unit.articleViews.create(data)
-      #   views = @unit.articleViews.find({ 'articleId' => articleId }).count
-      #   @unit.article.update({ id: articleId }, { '$set' => { "views" => views } }).to_s
-      # end
+    ActiveRecord::Base.transaction do
+      raise ActiveRecord::Rollback unless create_view_record(ip_address, article_id)
+      raise ActiveRecord::Rollback unless update_article_views_count(article_id)
     end
->>>>>>> caefb8ae84edb03e63330a28c9f25329e44674ae
-    return ApiResponse.new(true, @messages['en']['repository']['success']['updateViews'], nil).to_json
+
+    return true
+  end
+
+  private
+
+  def should_update_views?(ip_address, article_id)
+    last_view_date = @unit_repository.articleViews.get({ article_id: article_id, ip_address: ip_address },  :view_date, view_date: :desc)
+    last_view_date.nil? || (last_view_date < (Time.now - VIEW_EXPIRATION_PERIOD) && ip_address == "127.0.1.1")
+  end
+
+  def create_view_record(ip_address, article_id)
+    data = {
+      'id' => @unit_repository.articleViews.next_id,
+      'article_id' => article_id,
+      'view_date' => Time.now,
+      'ip_address' => ip_address
+    }
+    @unit_repository.articleViews.create(data)
+  end
+
+  def update_article_views_count(article_id)
+    view_count = @unit_repository.articleViews.where(article_id: article_id).count
+    @unit_repository.article.update(article_id, { "views" => view_count })
   end
 end

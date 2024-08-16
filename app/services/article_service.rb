@@ -3,18 +3,17 @@ require_relative './redis_service'
 require_relative '../models/api/api_response'
 require_relative '../repositories/unit_repository'
 
-
 class ArticleService
     def initialize(redis_service, unit_repository, messages)
+        @messages = messages
         @redis = redis_service
         @unit_repository = unit_repository
-        @messages = messages
     end
 
     def list_all_articles(language)
-        articles = @unit_repository.instance_variable_get(:@article).all({ language: language }).to_a
-        # # @redis.set_articles(articles.to_json, language)
-        return ApiResponse.new(true, @messages['en']['repository']['success']['find'], articles)
+        articles = @unit_repository.article.to_array({ language: language })
+        @redis.set_articles(articles.to_json, language)
+        return articles
     end
 
     # def list_all(language)

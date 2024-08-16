@@ -1,7 +1,7 @@
 require_relative './Base'
 
 class ArticleContent < Base
-  self.primary_key = 'id'
+  self.table_name = 'article_content'
 
   validates :articleId, presence: true, numericality: { only_integer: true }
   validates :Content, presence: true

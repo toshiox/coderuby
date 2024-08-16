@@ -2,7 +2,6 @@ require_relative './Base'
 
 class Article < Base
   self.table_name = 'article'
-  self.primary_key = 'id'
 
   validates :title, presence: true
   validates :subtitle, presence: true

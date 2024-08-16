@@ -1,11 +1,9 @@
-require './services/article_service'
-
 class ArticleController < Sinatra::Base
 
     def initialize(app = nil, article_service)
         super(app)
         @article_service = article_service
-      end
+    end
 
     get '/api/article/:language' do |language|
         content_type :json
