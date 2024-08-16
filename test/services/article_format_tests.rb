@@ -1,35 +1,54 @@
 require 'rspec'
-require_relative '../../app/services/article_format'
+require_relative '../../app/repositories/unit_repository.rb'
+require_relative '../../app/services/articleViews_service.rb'
 
-RSpec.describe ArticleFormatTests do
-  describe '#remove_and_store_code_blocks' do
-    let(:article_format) { ArticleFormat.new }
+RSpec.describe ArticleViewsService do
+  let(:article_views_repository) { instance_double('ArticleViewsRepository') }
+  let(:article_repository) { instance_double('ArticleRepository') }
+  let(:unit_repository) { UnitRepository.new(article_repository, article_views_repository, double('ArticleContentRepository')) }
+  let(:messages) { double('Messages') }
+  let(:service) { described_class.new(unit_repository, messages) }
+  let(:ip_address) { '127.0.1.1' }
+  let(:article_id) { 1 }
+  let(:current_time) { Time.now }
 
-    it 'removes and stores C# code blocks' do
-      text = "<p>Some text</p><C#>puts 'Hello, C#'</C#>"
+  before do
+    allow(Time).to receive(:now).and_return(current_time)
+  end
 
-      result_text, result_code_blocks = article_format.remove_and_store_code_blocks(text)
+  describe '#update_views' do
+    context 'when there are no previous views' do
+      it 'creates a new view record and updates the article views count' do
+        allow(article_views_repository).to receive(:get).and_return(nil)
+        allow(article_views_repository).to receive(:next_id).and_return(1)
+        allow(article_views_repository).to receive(:create).and_return(true)
+        allow(article_repository).to receive(:update).and_return(true)
+        allow(article_views_repository).to receive(:where).and_return(double(count: 1))
 
-      expect(result_text).to eq("<p>Some text</p><--C#-->")
-      expect(result_code_blocks).to eq(["<C#>puts 'Hello, C#'</C#>"])
+        expect(service.update_views(ip_address, article_id)).to be true
+      end
     end
 
-    it 'removes and stores Ruby code blocks' do
-      text = "<p>Some text</p><Ruby>puts 'Hello, Ruby'</Ruby>"
+    context 'when creating a view record fails' do
+      it 'raises a rollback error' do
+        allow(article_views_repository).to receive(:get).and_return(nil)
+        allow(article_views_repository).to receive(:next_id).and_return(1)
+        allow(article_views_repository).to receive(:create).and_return(false)
 
-      result_text, result_code_blocks = article_format.remove_and_store_code_blocks(text)
-
-      expect(result_text).to eq("<p>Some text</p><--RBY-->")
-      expect(result_code_blocks).to eq(["<Ruby>puts 'Hello, Ruby'</Ruby>"])
+        expect { service.update_views(ip_address, article_id) }.to raise_error(ActiveRecord::Rollback)
+      end
     end
 
-    it 'handles multiple code blocks' do
-      text = "<p>Some text</p><C#>puts 'Hello, C#'</C#><Ruby>puts 'Hello, Ruby'</Ruby>"
+    context 'when updating the article views count fails' do
+      it 'raises a rollback error' do
+        allow(article_views_repository).to receive(:get).and_return(nil)
+        allow(article_views_repository).to receive(:next_id).and_return(1)
+        allow(article_views_repository).to receive(:create).and_return(true)
+        allow(article_views_repository).to receive(:where).and_return(double(count: 1))
+        allow(article_repository).to receive(:update).and_return(false)
 
-      result_text, result_code_blocks = article_format.remove_and_store_code_blocks(text)
-
-      expect(result_text).to eq("<p>Some text</p><--C#--><--RBY-->")
-      expect(result_code_blocks).to eq(["<C#>puts 'Hello, C#'</C#>", "<Ruby>puts 'Hello, Ruby'</Ruby>"])
+        expect { service.update_views(ip_address, article_id) }.to raise_error(ActiveRecord::Rollback)
+      end
     end
   end
 end

@@ -21,7 +21,7 @@ class ArticleViewsService
 
   def should_update_views?(ip_address, article_id)
     last_view_date = @unit_repository.articleViews.get({ article_id: article_id, ip_address: ip_address },  :view_date, view_date: :desc)
-    last_view_date.nil? || (last_view_date < (Time.now - VIEW_EXPIRATION_PERIOD) && ip_address == "127.0.1.1")
+    ip_address != "127.0.1.1" && (last_view_date.nil? || (last_view_date < (Time.now - VIEW_EXPIRATION_PERIOD)))
   end
 
   def create_view_record(ip_address, article_id)
