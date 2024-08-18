@@ -22,7 +22,7 @@ RSpec.describe ArticleViewsService do
   let(:unit_repository) { instance_double('UnitRepository', articleViews: article_views_repository, article: article_repository) }
   let(:messages) { double('Messages') }
   let(:service) { described_class.new(unit_repository, messages) }
-  let(:ip_address) { '127.0.0.1' }
+  let(:ip_address) { '127.0.1.1' }
   let(:article_id) { 1 }
   let(:current_time) { Time.now }
 
@@ -32,7 +32,7 @@ RSpec.describe ArticleViewsService do
 
   describe '#update_views' do
     context 'success' do
-      it '' do
+      it do
         allow(article_views_repository).to receive(:get).and_return(nil)
         allow(article_views_repository).to receive(:next_id).and_return(1)
         allow(article_views_repository).to receive(:create).and_return(true)
