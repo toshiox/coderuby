@@ -1,5 +1,5 @@
 para rodar os testes unitarios execute o comando rspec, 
 todos os arquivos tem que ter o nome _spec.rb no final para ser reconhecido pelo comando rspec
 ex:
-    rspec test/services -- executa todos os testes
-    rspec test/services/articleFormat_spec.rb -- executa somente o arquivo 
+    rspec spec/services -- executa todos os testes
+    rspec spec/services/articleFormat_spec.rb -- executa somente o arquivo 

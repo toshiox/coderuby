@@ -4,6 +4,7 @@ require './config/dependency/repositories'
 require './services/redis_service'
 require './services/article_service'
 require './services/articleViews_service'
+require './services/articleContent_service'
 
 redis_service = RedisService.new
 messages = YAML.load_file('./config/friendlyMessages.yml')
@@ -15,6 +16,12 @@ ARTICLE_SERVICE = ArticleService.new(
 )
 
 ARTICLE_VIEWS_SERVICE = ArticleViewsService.new(
+  UNIT_REPOSITORY,
+  messages
+)
+
+ARTICLE_CONTENT_SERVICE = ArticleContentService.new(
+  redis_service,
   UNIT_REPOSITORY,
   messages
 )

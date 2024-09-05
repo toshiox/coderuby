@@ -21,18 +21,20 @@ class RedisService
         return true
     end
 
-    def set_articles_content(articles, language)
-        JSON.parse(articles).each do |article|
-            article_id = "article_content:#{article['id']}_#{language}"
-            if exist_article(article_id) == 0
-                @redis.set(article_id, article.to_json)
-                @redis.sadd?("language:#{article['language']}", article_id)
-            end
+    def set_articles_content(article, language)
+        article_id = "article_content:#{article[:article_id].to_s}_#{language}"
+        if exist_article(article_id) == 0
+            @redis.set(article_id, article.to_json)
+            @redis.sadd?("language:#{language}", article_id)
         end
     end
 
     def get_article(article_id)
         @redis.get("article:#{article_id}").to_json
+    end
+
+    def get_article_content(article_id)
+        @redis.get("article_content:#{article_id}").to_json
     end
 
     def exist_article(id)
