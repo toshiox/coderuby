@@ -2,23 +2,31 @@ require 'redis'
 require 'uri'
 
 class RedisService
-    def initialize
-        uri = URI.parse("redis://localhost:6379")
-        @redis = Redis.new(
-            url: uri.to_s,
-            ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+    def initialize(redis = nil)
+        @redis = redis || Redis.new(
+          url: URI.parse("redis://localhost:6379").to_s,
+          ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
         )
     end
 
-    def set_articles(articles, language)
+    def set_list_articles(articles, language)
         JSON.parse(articles).each do |article|
-            article_id = "article:#{article['id']}_#{language}"
-            if @redis.exists(article_id) == 0
-                @redis.set(article_id, article.to_json)
-                @redis.sadd?("language:#{article['language']}", article_id)
-            end
+          article_id = "article:#{article['id']}_#{language}"
+          if @redis.exists(article_id) == 0
+            @redis.set(article_id, article.to_json)
+            @redis.sadd?("language:#{language}", article_id)
+          end
         end
-        return true
+        true
+    end
+
+    def set_article(article, language)
+        article = JSON.parse(article) if article.is_a?(String)
+        article_id = "article:#{article['id']}_#{language}"
+        if exist_article(article_id) == 0
+            @redis.set(article_id, article.to_json)
+            @redis.sadd?("language:#{language}", article_id)
+        end
     end
 
     def set_articles_content(article, language)
@@ -30,11 +38,11 @@ class RedisService
     end
 
     def get_article(article_id)
-        @redis.get("article:#{article_id}").to_json
+        @redis.get("article:#{article_id}")
     end
 
     def get_article_content(article_id)
-        @redis.get("article_content:#{article_id}").to_json
+        @redis.get("article_content:#{article_id}")
     end
 
     def exist_article(id)
@@ -50,7 +58,7 @@ class RedisService
                 articles << JSON.parse(value)
             end
         end
-        articles.to_json
+        articles
     end
 
     def cleanMemory()

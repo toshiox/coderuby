@@ -1,7 +1,8 @@
+# spec/services/article_spec.rb
 require 'rspec'
 require 'active_record'
 require 'json'
-require_relative '../../app/services/articleContent_service'
+require_relative '../../app/services/article_service'
 require_relative '../../app/services/redis_service'
 require_relative '../../app/repositories/unit_repository'
 
@@ -21,28 +22,28 @@ end
 class Article < ActiveRecord::Base
 end
 
-RSpec.describe ArticleContentService do
+RSpec.describe ArticleService do
   let(:redis_service) { instance_double(RedisService) }
   let(:unit_repository) { instance_double(UnitRepository) }
-  let(:article_content_repository) { instance_double('ArticleContentRepository') }
+  let(:article_repository) { instance_double('ArticleRepository') }
   let(:messages) { {} }
   let(:service) { described_class.new(redis_service, unit_repository, messages) }
 
   before do
-    allow(unit_repository).to receive(:articleContent).and_return(article_content_repository)
+    allow(unit_repository).to receive(:article).and_return(article_repository)
   end
 
   describe '#get_by_id' do
     let(:id_with_language) { '1_en' }
     let(:id) { '1' }
     let(:language) { 'en' }
-    let(:created_at) { "2024-09-05 12:36:47" }
-    let(:article) { { article_id: 1, content: 'Test Content', created_at: created_at, language: 'en' } }
+    let(:created_at) { "2024-09-06 08:43:47" }
+    let(:article) { { title: 'Test Content', subtitle: "Test SubTile", resume: 'Test Resume' } }
     let(:cached_article) { article.to_json }
 
     context 'when the article is cached' do
       it 'returns the cached article' do
-        allow(redis_service).to receive(:get_article_content).with(id_with_language).and_return(cached_article)
+        allow(redis_service).to receive(:get_article).and_return(cached_article)
         result = service.get_by_id(id_with_language)
         expect(result).to eq(article)
       end
@@ -50,13 +51,13 @@ RSpec.describe ArticleContentService do
 
     context 'when the article is not cached' do
       before do
-        allow(redis_service).to receive(:get_article_content).with(id_with_language).and_return(nil)
+        allow(redis_service).to receive(:get_article).with(id_with_language).and_return(nil)
       end
 
       context 'and the article exists in the repository' do
         before do
-          allow(article_content_repository).to receive(:get).with({ article_id: id }, [ :article_id, :content, :created_at ]).and_return([1, 'Test Content', created_at])
-          allow(redis_service).to receive(:set_articles_content)
+          allow(article_repository).to receive(:get).with({ id: id }, [ :title, :subtitle, :resume ]).and_return(['Test Content', 'Test SubTile', 'Test Resume'])
+          allow(redis_service).to receive(:set_article)
         end
 
         it 'returns the article from the repository' do
@@ -65,14 +66,14 @@ RSpec.describe ArticleContentService do
         end
 
         it 'caches the article' do
-          expect(redis_service).to receive(:set_articles_content).with(article.to_json, language)
+          expect(redis_service).to receive(:set_article).with(article.to_json, language)
           service.get_by_id(id_with_language)
         end
       end
 
       context 'and the article does not exist in the repository' do
         before do
-          allow(article_content_repository).to receive(:get).with({ article_id: id }, [ :article_id, :content, :created_at ]).and_return(nil)
+          allow(article_repository).to receive(:get).with({ id: id }, [:title, :subtitle, :resume]).and_return(nil)
         end
 
         it 'returns nil' do

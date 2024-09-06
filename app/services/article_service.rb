@@ -11,9 +11,31 @@ class ArticleService
     end
 
     def list_all_articles(language)
-        articles = @unit_repository.article.to_array({ language: language })
-        @redis.set_articles(articles.to_json, language)
-        return articles
+        all_articles = @redis.list_all_articles(language)
+        if(!all_articles.nil?)
+            return all_articles  
+        else
+            articles = @unit_repository.article.to_array({ language: language })
+            @redis.set_list_articles(articles.to_json, language)
+            return articles
+        end
+    end
+
+    def get_by_id(id_with_language)
+        id, language = id_with_language.split('_')
+        cached_article = @redis.get_article(id_with_language)
+
+        if !cached_article.nil?
+            return JSON.parse(cached_article, symbolize_names: true)
+        else
+            article_data = @unit_repository.article.get({ id: id }, [ :title, :subtitle, :resume])
+            return nil if article_data.nil?
+        
+            article = { title: article_data[0], subtitle: article_data[1], resume: article_data[2] }
+            @redis.set_article(article.to_json, language)
+            
+            return article
+        end 
     end
 
     # def list_all(language)
@@ -51,13 +73,7 @@ class ArticleService
     #     end
     # end
 
-    # def get_by_id(id)
-    #     begin
-    #         ApiResponse.new(true, @messages['en']['repository']['success']['find'], @article_repository.find_one(_id: BSON::ObjectId(id)))
-    #     rescue => en
-    #         ApiResponse.new(false, @messages['en']['repository']['error']['find'],  nil)
-    #     end
-    # end
+   
 
     # def add(data)
     #     begin
