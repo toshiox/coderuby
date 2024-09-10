@@ -7,7 +7,7 @@ class ArticleContentController < Sinatra::Base
 
   get '/api/articleContent/:articleId' do |articleId|
     content_type :json
-    return @article_Content_service.get_by_id(articleId)
+    return @article_Content_service.get_by_id(articleId).to_json
   end
 
   # post '/api/articleContent/content' do

@@ -40,7 +40,17 @@ class ArticleFormat
     end
 
     def need_format(text)
-      tags = /<(C#|Ruby)>/
+      tags = /<(C#|Ruby|DockerFile|DockerCompose)>/
       !text.scan(tags).empty?
+    end
+
+    def dictionary(article_language, language_code)
+      if(article_language == 'en')
+        language_code == 'en' ? 'English' : 'Inglês'
+      elsif(article_language == 'pt')
+        language_code == 'en' ? 'Portuguese' : 'Português'
+      else
+        'Unknown'
+      end
     end
 end

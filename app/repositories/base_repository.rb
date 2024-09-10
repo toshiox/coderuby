@@ -3,7 +3,7 @@ class BaseRepository
     @model = model
   end
   
-  def to_array(query)
+  def to_array(query = nil)
     @model.where(query).to_a
   end
 
