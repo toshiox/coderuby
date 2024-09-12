@@ -4,11 +4,11 @@ require_relative '../models/api/api_response'
 require_relative '../repositories/unit_repository'
 
 class ArticleContentService
-  def initialize(redis_service, unit_repository, messages, unit_utils)
+  def initialize(redis_service, unit_repository, messages, translator)
     @messages = messages
     @redis = redis_service
+    @translator = translator
     @unit_repository = unit_repository
-    @unit_utils = unit_utils
   end
 
   def get_by_id(id_with_language)
@@ -23,7 +23,7 @@ class ArticleContentService
       
       article_language = @unit_repository.article.get({ id: id }, [ :language, ])
       if(article_language != language)
-        article_data = @unit_utils.translator.translate(article_data, article_language, language)
+        article_data = @translator.translate(article_data, article_language, language)
       end
 
       article = { article_id: id, content: article_data }

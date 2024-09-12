@@ -29,5 +29,5 @@ ARTICLE_CONTENT_SERVICE = ArticleContentService.new(
   redis_service,
   UNIT_REPOSITORY,
   messages,
-  UNIT_UTILS
+  translator
 )

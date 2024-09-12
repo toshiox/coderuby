@@ -16,5 +16,5 @@ use RedisController
 use ArticleViewsController, ARTICLE_VIEWS_SERVICE
 use ArticleContentController, ARTICLE_CONTENT_SERVICE
 
-set :bind, '127.0.1.1'
-set :database_file, '../config/database.yml'
+set :bind, '0.0.0.0'
+set :database_file, './config/database.yml'

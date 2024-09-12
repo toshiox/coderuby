@@ -12,7 +12,8 @@ class ArticleService
 
     def list_all_articles(language)
         all_articles = @redis.list_all_articles(language)
-        return all_articles unless all_articles.nil? || all_articles.empty?
+        puts all_articles
+        return all_articles.sort_by { |article| -article["id"].to_i } unless all_articles.nil? || all_articles.empty?
       
         articles = @unit_repository.article.to_array
         return nil if articles.nil?
@@ -22,6 +23,7 @@ class ArticleService
         end
       
         @redis.set_list_articles(translated_articles.to_json, language)
+        translated_articles.sort_by { |article| -article.id }
         translated_articles.flatten
     end
 

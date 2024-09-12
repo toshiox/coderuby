@@ -4,7 +4,7 @@ require 'uri'
 class RedisService
     def initialize(redis = nil)
         @redis = redis || Redis.new(
-          url: URI.parse("redis://localhost:6379").to_s,
+          url: URI.parse('redis://redis:6379').to_s,
           ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
         )
     end
@@ -51,13 +51,18 @@ class RedisService
 
     def list_all_articles(language)
         articles = []
-        filtered_keys = keys_in_language = @redis.smembers("language:#{language}")
-        filtered_keys.each do |key|
+        pattern = "article:*_#{language}"
+        cursor = "0"
+      
+        loop do
+          cursor, keys = @redis.scan(cursor, match: pattern)
+          keys.each do |key|
             value = @redis.get(key)
-            if value
-                articles << JSON.parse(value)
-            end
+            articles << JSON.parse(value) if value
+          end
+          break if cursor == "0"
         end
+      
         articles
     end
 
