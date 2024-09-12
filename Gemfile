@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 ruby "3.3.4"
-gem "rails", "~> 7.1.1"
+gem "rails", "~> 7.2.1"
 gem 'sinatra', '~> 2.1.0'
 gem 'sinatra-activerecord'
 gem 'rack'
