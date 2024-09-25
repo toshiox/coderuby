@@ -6,7 +6,7 @@ gem 'sinatra', '~> 2.1.0'
 gem 'sinatra-activerecord'
 gem 'rack'
 gem 'sinatra-cross_origin'
-gem "sqlite3", "~> 1.4"
+gem "sqlite3", "~> 2.1"
 gem "puma", ">= 5.0"
 gem 'redis', '~> 4.3'
 gem "tzinfo-data", platforms: %i[ windows jruby ]
