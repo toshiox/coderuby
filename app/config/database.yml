@@ -4,7 +4,6 @@ default: &default
   pool: 5
   username: app_sys
   password: code@@2
-  port: 5432
   host: database
   
 development:

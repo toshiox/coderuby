@@ -18,7 +18,4 @@ use ArticleContentController, ARTICLE_CONTENT_SERVICE
 
 set :bind, '0.0.0.0'
 set :database_file, './config/database.yml'
-
-# rack_env = ENV['RACK_ENV'] 
-
-# $env:RACK_ENV="production"; ruby app.rb
+ActiveRecord::Base.establish_connection(ENV['RACK_ENV'].to_sym)
