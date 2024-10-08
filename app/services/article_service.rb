@@ -11,20 +11,20 @@ class ArticleService
     end
 
     def list_all_articles(language)
-        all_articles = @redis.list_all_articles(language)
-        puts all_articles
-        return all_articles.sort_by { |article| -article["id"].to_i } unless all_articles.nil? || all_articles.empty?
-      
-        articles = @unit_repository.article.to_array
-        return nil if articles.nil?
-        
-        translated_articles = articles.map do |article|
-          article.language != language ? @translator.translate_article(article, language) : article
+      articles = @unit_repository.article.to_array
+      return nil if articles.nil? || articles.empty?
+
+      articles.map! do |article|
+        if @redis.exist_article("article:#{article.id}_#{language}") == false
+          article = article.language != language ? @translator.translate_article(article, language) : article
+        else
+          article = JSON.parse(@redis.get_article("#{article.id}_#{language}"))
         end
-      
-        @redis.set_list_articles(translated_articles.to_json, language)
-        translated_articles.sort_by { |article| -article.id }
-        translated_articles.flatten
+        article
+      end
+
+      @redis.set_list_articles(articles.to_json, language)
+      articles.sort_by { |article| -article['id'] }
     end
 
     def get_by_id(id_with_language)

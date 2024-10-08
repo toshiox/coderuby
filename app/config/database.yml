@@ -5,20 +5,18 @@ default: &default
   username: app_sys
   password: code@@2
   port: 5432
-
+  host: localhost
+  
 development:
   <<: *default
   database: code
-  host: database  # Use o nome do serviço do banco de dados
 
 test:
   <<: *default
   database: code
-  host: database  # Use o nome do serviço do banco de dados
 
 production:
   <<: *default
   database: code
   username: app_sys
   password: code@@2
-  host: database  # Use o nome do serviço do banco de dados

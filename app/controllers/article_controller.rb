@@ -7,6 +7,8 @@ class ArticleController < Sinatra::Base
 
     get '/api/article/all/:language' do |language|
         content_type :json
+        puts 'valor consoleee'
+        puts ENV['RACK_ENV'] 
         return @article_service.list_all_articles(language).to_json
     end
 

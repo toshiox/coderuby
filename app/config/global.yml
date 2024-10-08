@@ -1,0 +1,5 @@
+development:
+  redis_url: "redis://localhost:6379"
+
+production:
+  redis_url: "redis://redis:6379"

@@ -3,8 +3,10 @@ require 'uri'
 
 class RedisService
     def initialize(redis = nil)
+        config  = YAML.load_file('./config/global.yml')
+        redis_url = config[ENV['RACK_ENV']]['redis_url']
         @redis = redis || Redis.new(
-          url: URI.parse('redis://redis:6379').to_s,
+          url: redis_url,
           ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
         )
     end
@@ -46,7 +48,7 @@ class RedisService
     end
 
     def exist_article(id)
-        @redis.exists(id)
+        @redis.exists(id) > 0
     end
 
     def list_all_articles(language)

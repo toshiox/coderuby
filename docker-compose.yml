@@ -5,6 +5,8 @@ services:
     build: .
     expose:
       - 4567
+    environment:
+      - RACK_ENV=production
     deploy:
       replicas: 2
       resources:

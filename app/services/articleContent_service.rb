@@ -21,12 +21,13 @@ class ArticleContentService
       article_data = @unit_repository.articleContent.get({ article_id: id }, [ :content, ])
       return nil if article_data.nil?
       
-      article_language = @unit_repository.article.get({ id: id }, [ :language, ])
-      if(article_language != language)
-        article_data = @translator.translate(article_data, article_language, language)
+      article_info = @unit_repository.article.get({ id: id })
+     
+      if(article_info.language != language)
+        article_data = @translator.translate(article_data, article_info.language, language)
       end
 
-      article = { article_id: id, content: article_data }
+      article = { article_id: id, content: article_data, created_at: article_info.created_at, time_read: article_info.time_read, language: language }
       @redis.set_articles_content(article, language)
       return article
     end 
