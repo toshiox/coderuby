@@ -10,6 +10,6 @@ COPY ./app .
 
 EXPOSE 4567
 
-ENV RACK_ENV=production
+ENV RACK_ENV=development
 
 CMD ["ruby", "app.rb"]

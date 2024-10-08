@@ -6,7 +6,7 @@ services:
     expose:
       - 4567
     environment:
-      - RACK_ENV=production
+      - RACK_ENV=development
     deploy:
       replicas: 2
       resources:
