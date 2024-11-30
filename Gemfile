@@ -8,7 +8,7 @@ gem 'rack'
 gem 'sinatra-cross_origin'
 gem "sqlite3", "~> 1.4"
 gem "puma", ">= 5.0"
-gem 'redis', '~> 4.3'
+gem 'redis', '~> 5.3'
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
 gem 'httparty'
